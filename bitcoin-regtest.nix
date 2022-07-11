@@ -22,14 +22,6 @@
             "${nix-bitcoin}/modules/modules.nix"
           ];
 
-          # To login to the container as "operator"
-          # $ sudo nixos-container login btc-regtest
-          users.users.operator = {
-            isNormalUser = true;
-            home = "/home/operator";
-            password = "<YOUR_PASSWORD_HERE>";
-          };
-
           # Automatically generate all secrets required by services.
           # The secrets are stored in /etc/nix-bitcoin-secrets
           nix-bitcoin.generateSecrets = true;
@@ -48,10 +40,11 @@
 
           # Enable interactive access to nix-bitcoin features (like bitcoin-cli) for
           # your system's main user
-          nix-bitcoin.operator = {
-            enable = true;
-            name = "operator";
-          };
+          nix-bitcoin.operator.enable = true;
+
+          # To login to the container as "operator"
+          # $ sudo nixos-container login operator
+          users.users.operator.password = "<YOUR_PASSWORD_HERE>";
 
           # Prevent garbage collection of the nix-bitcoin source
           system.extraDependencies = [ nix-bitcoin ];
